@@ -13,6 +13,8 @@ import { httpClient } from "./../../library/http";
 const Project = () => {
   const [projects, setProjects] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [projectData, setProjectData] = useState({
     ProjectName: "",
     Description: "",
@@ -49,6 +51,32 @@ const Project = () => {
     }
   };
 
+  const editProject = async () => {
+    try {
+      await httpClient().put(`/projects/${selectedProject.id}`, projectData);
+      fetchProjects();
+      setShowEditModal(false);
+      setSelectedProject(null);
+      setProjectData({
+        ProjectName: "",
+        Description: "",
+        StartDate: "",
+        DueDate: "",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteProject = async (projectId) => {
+    try {
+      await httpClient().delete(`/projects/${projectId}`);
+      fetchProjects();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleProjectChange = (e) => {
     const { name, value } = e.target;
     setProjectData({ ...projectData, [name]: value });
@@ -62,8 +90,19 @@ const Project = () => {
         <td>{project.StartDate}</td>
         <td>{project.DueDate}</td>
         <td>
-          <Button variant="info">Edit</Button>
-          <Button variant="danger">Delete</Button>
+          <Button
+            variant="info"
+            onClick={() => {
+              setSelectedProject(project);
+              setProjectData({ ...project });
+              setShowEditModal(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Button variant="danger" onClick={() => deleteProject(project.id)}>
+            Delete
+          </Button>
         </td>
       </tr>
     ));
@@ -152,6 +191,74 @@ const Project = () => {
           </Button>
           <Button variant="primary" onClick={createProject}>
             Create
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit Project Modal */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Project</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Col xs={12} md={6}>
+                <Form.Group controlId="formProjectName">
+                  <Form.Label>Project Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="ProjectName"
+                    value={projectData.ProjectName}
+                    onChange={handleProjectChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={6}>
+                <Form.Group controlId="formDescription">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="Description"
+                    value={projectData.Description}
+                    onChange={handleProjectChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={6}>
+                <Form.Group controlId="formStartDate">
+                  <Form.Label>Start Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="StartDate"
+                    value={projectData.StartDate}
+                    onChange={handleProjectChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={6}>
+                <Form.Group controlId="formDueDate">
+                  <Form.Label>Due Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="DueDate"
+                    value={projectData.DueDate}
+                    onChange={handleProjectChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={editProject}>
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
