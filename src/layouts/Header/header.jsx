@@ -1,12 +1,14 @@
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import tasklogo from "./../../assets/tasklogo.png";
 
-const header = () => {
+const Header = () => {
   const [active, setActive] = useState(window.location.pathname);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isHomeVisible, setIsHomeVisible] = useState(true); // Initially visible
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     checkAuthenticationStatus();
@@ -24,6 +26,7 @@ const header = () => {
   function logout() {
     localStorage.clear();
     window.dispatchEvent(new Event("storage"));
+    setIsHomeVisible(true);
     navigate("/");
   }
 
@@ -43,6 +46,14 @@ const header = () => {
 
   const logoStyle = {
     marginRight: "3px",
+  };
+
+  const handleLoginClick = () => {
+    setIsHomeVisible(true);
+  };
+
+  const handleRegisterClick = () => {
+    setIsHomeVisible(true);
   };
 
   return (
@@ -65,12 +76,24 @@ const header = () => {
             activeKey={active}
             onSelect={(selected) => setActive(selected)}
           >
-            <Nav.Link as={Link} to="/" style={linkStyle}>
-              Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/dashboard" style={linkStyle}>
-              Dashboard
-            </Nav.Link>
+            {isHomeVisible && (
+              <Nav.Link as={Link} to="/" style={linkStyle}>
+                Home
+              </Nav.Link>
+            )}
+            {isAuthenticated && (
+              <>
+                <Nav.Link as={Link} to="/dashboard" style={linkStyle}>
+                  Dashboard
+                </Nav.Link>
+                <Nav.Link as={Link} to="/projects" style={linkStyle}>
+                  Projects
+                </Nav.Link>
+                <Nav.Link as={Link} to="/tasks" style={linkStyle}>
+                  Tasks
+                </Nav.Link>
+              </>
+            )}
           </Nav>
           <Nav className="logReg">
             {isAuthenticated ? (
@@ -79,10 +102,20 @@ const header = () => {
               </Nav.Link>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login" style={linkStyle}>
+                <Nav.Link
+                  as={Link}
+                  to="/login"
+                  style={linkStyle}
+                  onClick={handleLoginClick}
+                >
                   Login
                 </Nav.Link>
-                <Nav.Link as={Link} to="/register" style={linkStyle}>
+                <Nav.Link
+                  as={Link}
+                  to="/register"
+                  style={linkStyle}
+                  onClick={handleRegisterClick}
+                >
                   Register
                 </Nav.Link>
               </>
@@ -94,4 +127,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default Header;

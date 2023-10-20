@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Container, Card, Form, Button, Toast } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import http from "./../../library/http";
+import { httpClient } from "../../library/http";
 
 const Register = () => {
-  const api = http();
+  const api = httpClient();
   const [formData, setFormData] = useState({
     Username: "",
     Email: "",

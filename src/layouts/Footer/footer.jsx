@@ -12,7 +12,7 @@ const Footer = () => {
             <p>&copy; 2023 Your Company</p>
           </Col>
           <Col xs={12} md={6} className="text-md-end">
-            <p>Contact us: contact@example.com</p>
+            <p>Contact us: 8-700</p>
           </Col>
         </Row>
       </Container>

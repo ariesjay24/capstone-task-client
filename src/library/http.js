@@ -1,14 +1,15 @@
 import axios from "axios";
 
-function http(options = {}) {
+export const httpClient = (options = {}) => {
+  const authToken = localStorage.getItem("token");
   const http = axios.create({
     baseURL: import.meta.env.VITE_API,
     headers: {
       Accept: "application/json",
-      ...options,
+      Authorization: `Bearer ${authToken}`,
+      ...options.headers,
     },
   });
-  return http;
-}
 
-export default http;
+  return http;
+};

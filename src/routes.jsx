@@ -1,7 +1,8 @@
 import Home from "./views/Home/Home";
 import Dashboard from "./views/Dashboard/Dashboard";
+import Project from "./views/Project/Project";
+import Task from "./views/Task/Task";
 import Login from "./views/Login/Login";
-import Profile from "./views/Profile/Profile";
 import Registration from "./views/Registration/Register";
 
 export const routes = [
@@ -15,11 +16,15 @@ export const routes = [
     name: "Dashboard",
     element: <Dashboard />,
   },
-
   {
-    path: "/profile",
-    name: "Profile",
-    element: <Profile />,
+    path: "/projects",
+    name: "Projects",
+    element: <Project />,
+  },
+  {
+    path: "/tasks",
+    name: "Task",
+    element: <Task />,
   },
 
   {
