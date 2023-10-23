@@ -1,0 +1,59 @@
+body {
+  position: relative;
+  background-color: #022d64;
+}
+
+.btn {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  text-align: center;
+  margin: 1rem 0;
+  color: #f8f9fa;
+}
+
+.button-create {
+  display: block;
+  margin: 1rem auto;
+}
+
+table {
+  width: 100%;
+}
+
+thead {
+  background-color: #f8f9fa;
+}
+
+th,
+td {
+  text-align: center;
+}
+
+td button {
+  padding: 5px 10px;
+}
+
+.modal {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-body .form-group {
+  text-align: left;
+}
+
+.modal-footer button {
+  margin-right: 1rem;
+}
+
+@media (max-width: 576px) {
+  .modal {
+    margin: 0;
+  }
+}

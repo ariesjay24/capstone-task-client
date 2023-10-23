@@ -36,7 +36,7 @@ const Register = () => {
         const response = await api.post("/register", formData);
         console.log(response);
 
-        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         window.dispatchEvent(new Event("storage"));
         navigate("/");

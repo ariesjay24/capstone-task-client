@@ -6,7 +6,7 @@ import tasklogo from "./../../assets/tasklogo.png";
 const Header = () => {
   const [active, setActive] = useState(window.location.pathname);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isHomeVisible, setIsHomeVisible] = useState(true); // Initially visible
+  const [isHomeVisible, setIsHomeVisible] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,7 +57,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar style={navbarStyle} expand="lg">
+    <Navbar style={navbarStyle} expand="lg" className="container-fluid">
       <Container>
         <Navbar.Brand as={Link} to="/" style={{ color: "white" }}>
           <img

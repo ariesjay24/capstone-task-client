@@ -10,6 +10,8 @@ const Login = () => {
   const [Password, setPassword] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   async function submit(e) {
@@ -26,8 +28,13 @@ const Login = () => {
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("user", JSON.stringify(user.data.user));
 
-      window.dispatchEvent(new Event("storage"));
-      navigate("/");
+      setSuccessMessage("Login successful!");
+      setShowSuccessToast(true);
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event("storage"));
+        navigate("/");
+      }, 2000);
     } catch (e) {
       console.log(e.response.data.message);
       setToastMessage("Login failed. Please check your credentials.");
@@ -36,6 +43,7 @@ const Login = () => {
   }
 
   const toggleToast = () => setShowToast(!showToast);
+  const toggleSuccessToast = () => setShowSuccessToast(!showSuccessToast);
 
   return (
     <div
@@ -77,6 +85,7 @@ const Login = () => {
         </Card>
       </Container>
 
+      {/* Error Toast */}
       <Toast
         show={showToast}
         onClose={toggleToast}
@@ -94,6 +103,26 @@ const Login = () => {
           <strong className="mr-auto">Error</strong>
         </Toast.Header>
         <Toast.Body>{toastMessage}</Toast.Body>
+      </Toast>
+
+      {/* Success Toast */}
+      <Toast
+        show={showSuccessToast}
+        onClose={toggleSuccessToast}
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          backgroundColor: "green",
+          color: "white",
+        }}
+        delay={3000}
+        autohide
+      >
+        <Toast.Header>
+          <strong className="mr-auto">Success</strong>
+        </Toast.Header>
+        <Toast.Body>{successMessage}</Toast.Body>
       </Toast>
     </div>
   );
