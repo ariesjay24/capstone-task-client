@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header/header";
-import Footer from "./Footer/Footer";
+import Footer from "./../layouts/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import routes from "../routes";
 import TaskManager from "../views/Task/Task";
