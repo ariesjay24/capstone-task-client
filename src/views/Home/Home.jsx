@@ -10,7 +10,7 @@ import aboutImage from "./../../assets/aboutImage.jpg";
 const Home = () => {
   return (
     <>
-      {/* Hero */}
+      {/* Hero Section */}
       <div className="hero">
         <Container className="hero-container">
           <h1 className="text-style">Master your tasks online</h1>
