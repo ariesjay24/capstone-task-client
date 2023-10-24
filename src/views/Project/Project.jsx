@@ -28,17 +28,17 @@ const Project = () => {
   });
 
   const [filterText, setFilterText] = useState("");
-  const [sortBy, setSortBy] = useState("id"); // State for sorting criteria
-  const [sortOrder, setSortOrder] = useState("asc"); // State for sorting order
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchProjects();
-  }, [sortBy, sortOrder]); // Trigger fetchProjects when sorting criteria change
+  }, [sortBy, sortOrder]);
 
   const fetchProjects = async () => {
     try {
       const response = await httpClient().get("/projects", {
-        params: { sortBy, sortOrder }, // Pass sorting parameters to the API
+        params: { sortBy, sortOrder },
       });
       setProjects(response.data.projects);
     } catch (error) {
@@ -46,7 +46,6 @@ const Project = () => {
     }
   };
 
-  // Filter projects based on project name
   const filteredProjects = projects.filter((project) =>
     project.ProjectName.toLowerCase().includes(filterText.toLowerCase())
   );

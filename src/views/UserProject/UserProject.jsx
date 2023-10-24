@@ -21,7 +21,7 @@ const UserProjects = ({ userID }) => {
   });
 
   useEffect(() => {
-    fetchUserProjects(userID); // Pass the userID to the fetch function
+    fetchUserProjects(userID);
   }, [userID]);
 
   const fetchUserProjects = async (userID) => {
@@ -39,7 +39,7 @@ const UserProjects = ({ userID }) => {
   const createUserProject = async () => {
     try {
       await httpClient().post("/user-projects", projectData);
-      // Fetch user projects again to include the newly added user project
+
       fetchUserProjects();
       setShowCreateModal(false);
       setProjectData({
