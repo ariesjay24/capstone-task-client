@@ -1,5 +1,6 @@
 import Home from "./views/Home/Home";
-import Dashboard from "./views/Dashboard/Dashboard";
+import ProjectProgress from "./views/ProjectProgress/ProjectProgress";
+import UserProject from "./views/UserProject/UserProject";
 import Project from "./views/Project/Project";
 import Task from "./views/Task/Task";
 import Login from "./views/Login/Login";
@@ -11,11 +12,7 @@ export const routes = [
     name: "Home",
     element: <Home />,
   },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    element: <Dashboard />,
-  },
+
   {
     path: "/projects",
     name: "Projects",
@@ -25,6 +22,17 @@ export const routes = [
     path: "/tasks",
     name: "Task",
     element: <Task />,
+  },
+
+  {
+    path: "/project-progress",
+    name: "Project Progress",
+    element: <ProjectProgress />,
+  },
+  {
+    path: "/user-project",
+    name: "Project Users",
+    element: <UserProject />,
   },
 
   {

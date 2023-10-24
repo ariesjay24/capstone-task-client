@@ -83,14 +83,17 @@ const Header = () => {
             )}
             {isAuthenticated && (
               <>
-                <Nav.Link as={Link} to="/dashboard" style={linkStyle}>
-                  Dashboard
-                </Nav.Link>
                 <Nav.Link as={Link} to="/projects" style={linkStyle}>
                   Projects
                 </Nav.Link>
                 <Nav.Link as={Link} to="/tasks" style={linkStyle}>
                   Tasks
+                </Nav.Link>
+                <Nav.Link as={Link} to="/project-progress" style={linkStyle}>
+                  Task Progress
+                </Nav.Link>
+                <Nav.Link as={Link} to="/user-project" style={linkStyle}>
+                  Project Users
                 </Nav.Link>
               </>
             )}

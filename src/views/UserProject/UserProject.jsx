@@ -12,7 +12,7 @@ import { httpClient } from "./../../library/http";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UserProjects = () => {
+const UserProjects = ({ userID }) => {
   const [userProjects, setUserProjects] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [projectData, setProjectData] = useState({
@@ -21,21 +21,25 @@ const UserProjects = () => {
   });
 
   useEffect(() => {
-    fetchUserProjects();
-  }, []);
+    fetchUserProjects(userID); // Pass the userID to the fetch function
+  }, [userID]);
 
-  const fetchUserProjects = async () => {
+  const fetchUserProjects = async (userID) => {
     try {
-      const response = await httpClient().get("/user-projects");
+      const response = await httpClient().get(
+        `/user-projects?UserID=${userID}`
+      );
       setUserProjects(response.data.userProjects);
     } catch (error) {
       console.error(error);
+      toast.error("Error fetching user projects");
     }
   };
 
   const createUserProject = async () => {
     try {
       await httpClient().post("/user-projects", projectData);
+      // Fetch user projects again to include the newly added user project
       fetchUserProjects();
       setShowCreateModal(false);
       setProjectData({
@@ -46,7 +50,6 @@ const UserProjects = () => {
       toast.success("User added to project successfully");
     } catch (error) {
       console.error(error);
-
       toast.error("Error adding user to project");
     }
   };

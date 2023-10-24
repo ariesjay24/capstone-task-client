@@ -1,0 +1,48 @@
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+form {
+  margin: 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f0f0f0;
+}
+
+button {
+  margin-right: 10px;
+}
+
+.create-button {
+  margin: 20px 0;
+  background-color: aqua;
+}
+
+.delete-button {
+  background-color: #ff9999;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+}

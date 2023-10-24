@@ -17,7 +17,6 @@ const Register = () => {
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
 
-  // Validation state for each input field
   const [validation, setValidation] = useState({
     Username: null,
     Email: null,
@@ -30,7 +29,6 @@ const Register = () => {
   async function submit(e) {
     e.preventDefault();
 
-    // Check if all fields are valid
     if (Object.values(validation).every((isValid) => isValid === "valid")) {
       try {
         const response = await api.post("/register", formData);
@@ -53,14 +51,11 @@ const Register = () => {
 
   const toggleToast = () => setShowToast(!showToast);
 
-  // Validation function for each input
   const handleValidation = (e) => {
     const { name, value } = e.target;
 
-    // Implement your own validation logic here
     let isValid = "valid";
 
-    // Check if the input is empty
     if (value.trim() === "") {
       isValid = "error";
     }
@@ -220,7 +215,7 @@ const Register = () => {
           backgroundColor: "red",
           color: "white",
         }}
-        delay={3000} // Adjust the duration the toast is visible
+        delay={3000}
         autohide
       >
         <Toast.Header>

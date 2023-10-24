@@ -1,9 +1,15 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0; /* Added to remove any default body margin */
+}
+
 .sticky-footer {
   background-color: #001137;
   color: white;
-  padding: 18px;
+  padding: 18px 0; /* Removed margin-bottom property */
   text-align: center;
-  margin-bottom: 0;
 }
 
 .logo {
@@ -12,20 +18,15 @@
   margin-right: 5px;
 }
 
-.quick-links {
+.footer .quick-links {
   list-style: none;
+  padding: 0; /* Added padding: 0; to the ul element */
 }
 
-.quick-links li {
+.footer .quick-links li {
   margin: 0.5rem 0;
 }
 
 .quick-links a {
   color: white;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }

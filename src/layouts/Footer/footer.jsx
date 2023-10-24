@@ -14,9 +14,8 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <footer className="sticky-footer mt-3">
-      <Container>
+      <Container className="footer">
         <Row>
-          {/* First Row: Quick Links */}
           <Col xs={12} md={4} className="text-md-start">
             <h3>Quick Links</h3>
             <ul className="quick-links">
@@ -26,22 +25,23 @@ const Footer = () => {
                 </Nav.Link>
               </li>
               <li>
-                <Nav.Link as={Link} to="/dashboard">
-                  Dashboard
+                <Nav.Link as={Link} to="/about">
+                  About
                 </Nav.Link>
               </li>
               <li>
-                <Nav.Link as={Link} to="/projects">
-                  Projects
+                <Nav.Link as={Link} to="/services">
+                  Services
                 </Nav.Link>
               </li>
-              <Nav.Link as={Link} to="/tasks">
-                Tasks
-              </Nav.Link>
+              <li>
+                <Nav.Link as={Link} to="/contacts">
+                  Contacts
+                </Nav.Link>
+              </li>
             </ul>
           </Col>
 
-          {/* Second Row: Contact Information */}
           <Col xs={12} md={4} className="text-center">
             <div className="contact-info">
               <h4>Contact Us:</h4>
@@ -58,7 +58,6 @@ const Footer = () => {
             </div>
           </Col>
 
-          {/* Third Row: Logo and Title */}
           <Col xs={12} md={4} className="text-center">
             <div className="mt-3">
               <img src={tasklogo} alt="Logo" className="logo" />

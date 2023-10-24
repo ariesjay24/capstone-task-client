@@ -5,10 +5,11 @@ import {
   Button,
   Modal,
   Form,
-  Toast,
   Row,
   Col,
 } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { httpClient } from "./../../library/http";
 import "./Task.css";
 
@@ -24,13 +25,14 @@ const TaskManager = () => {
     StartDate: "",
     DueDate: "",
     ProjectID: "",
-    UserID: "",
+    UserID: 1,
     Type: "",
   });
   const [selectedTask, setSelectedTask] = useState(null);
-  const [toastMessage, setToastMessage] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("id");
   const [filterStatus, setFilterStatus] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchTasks();
@@ -59,10 +61,10 @@ const TaskManager = () => {
           StartDate: "",
           DueDate: "",
           ProjectID: "",
-          UserID: "",
+          UserID: 1,
           Type: "",
         });
-        setToastMessage("Task created successfully");
+        toast.success("Task created successfully");
       } else {
         console.error("Task creation failed");
       }
@@ -93,7 +95,7 @@ const TaskManager = () => {
       await httpClient().put(`/tasks/${selectedTask.id}`, taskData);
       fetchTasks();
       setShowEditModal(false);
-      setToastMessage("Task updated successfully");
+      toast.success("Task updated successfully");
     } catch (error) {
       console.error(error);
     }
@@ -103,10 +105,10 @@ const TaskManager = () => {
     try {
       await httpClient().delete(`/tasks/${taskId}`);
       fetchTasks();
-      setToastMessage("Task deleted successfully");
+      toast.success("Task deleted successfully");
     } catch (error) {
       console.error(error);
-      setToastMessage("Failed to delete the task");
+      toast.error("Failed to delete the task");
     }
   };
 
@@ -117,25 +119,33 @@ const TaskManager = () => {
   };
 
   const sortTasks = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+
     const sortedTasks = [...tasks].sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a[field] > b[field] ? 1 : -1;
-      } else {
-        return a[field] < b[field] ? 1 : -1;
+      if (field === "ProjectID" || field === "id") {
+        if (sortOrder === "asc") {
+          return a[field] - b[field];
+        } else {
+          return b[field] - a[field];
+        }
       }
+      return 0;
     });
 
     setTasks(sortedTasks);
   };
 
   const filterAndSortTasks = () => {
-    // Apply filtering first
     const filteredTasks =
       filterStatus === "All"
         ? tasks
         : tasks.filter((task) => task.Status === filterStatus);
 
-    // Apply sorting
     const sortedTasks = [...filteredTasks].sort((a, b) => {
       if (sortOrder === "asc") {
         return a.StartDate > b.StartDate ? 1 : -1;
@@ -143,6 +153,17 @@ const TaskManager = () => {
         return a.StartDate < b.StartDate ? 1 : -1;
       }
     });
+
+    if (searchQuery.trim() !== "") {
+      return sortedTasks.filter((task) => {
+        if (typeof task.TaskName === "string") {
+          return task.TaskName.toLowerCase().includes(
+            searchQuery.toLowerCase()
+          );
+        }
+        return false;
+      });
+    }
 
     return sortedTasks;
   };
@@ -153,7 +174,7 @@ const TaskManager = () => {
     return filteredAndSortedTasks.map((task) => (
       <tr key={task.id}>
         <td>{task.ProjectID}</td>
-        <td>{task.UserID}</td>
+        <td>{task.id}</td>
         <td>{task.TaskName}</td>
         <td>{task.Description}</td>
         <td>{task.Priority}</td>
@@ -173,22 +194,31 @@ const TaskManager = () => {
   return (
     <Container>
       <h1 className="my-4">Task Management</h1>
+      <Row className="mb-3">
+        <Col>
+          <Form.Group controlId="formSearchTask">
+            <Form.Control
+              type="text"
+              placeholder="Search by Task Name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+
       <div className="d-flex justify-content-between align-items-center my-3">
         <div className="d-flex align-items-center">
-          <label className="mr-2">Sort by Start Date:</label>
+          <label className="m-2">Sort by ID:</label>
 
           <Button
             variant="outline-primary"
-            onClick={() => sortTasks("StartDate")}
+            onClick={() => sortTasks("ProjectID")}
           >
-            Ascending
+            Project ID
           </Button>
-          <Button
-            variant="outline-primary"
-            className="ml-2"
-            onClick={() => sortTasks("StartDate")}
-          >
-            Descending
+          <Button variant="outline-primary" onClick={() => sortTasks("id")}>
+            Task ID
           </Button>
         </div>
 
@@ -206,15 +236,19 @@ const TaskManager = () => {
         </div>
       </div>
 
-      <Button variant="primary" onClick={() => setShowCreateModal(true)}>
+      <Button
+        className="mb-3"
+        variant="primary"
+        onClick={() => setShowCreateModal(true)}
+      >
         Create Task
       </Button>
 
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ProjectID</th>
-            <th>UserID</th>
+            <th>Project ID</th>
+            <th>Task ID</th>
             <th>Task Name</th>
             <th>Description</th>
             <th>Priority</th>
@@ -418,7 +452,7 @@ const TaskManager = () => {
                   value={taskData.Status}
                   onChange={handleTaskChange}
                 >
-                  <option value="Pending">Pending</option>
+                  <option value="Not Started">Not Started</option>
                   <option value="In Progress">In Progress</option>
                   <option value="Completed">Completed</option>
                 </Form.Control>
@@ -509,19 +543,17 @@ const TaskManager = () => {
         </Modal.Footer>
       </Modal>
 
-      <Toast
-        show={toastMessage !== ""}
-        onClose={() => setToastMessage("")}
-        delay={3000}
-        autohide
-        style={{
-          position: "fixed",
-          top: "10px",
-          right: "10px",
-        }}
-      >
-        <Toast.Body>{toastMessage}</Toast.Body>
-      </Toast>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
