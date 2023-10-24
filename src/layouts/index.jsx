@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "./Header/header";
-import Footer from "./Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import routes from "../routes";
 import TaskManager from "../views/Task/Task";
@@ -22,7 +21,6 @@ const index = () => {
         })}
         <Route path="/projects/:projectId/tasks" element={<TaskManager />} />
       </Routes>
-      <Footer />
     </div>
   );
 };
